@@ -28,53 +28,76 @@ header h1 {
   color: #bbb;
 }
 
-/* ===== TV SCREEN ANIMATION ===== */
+/* ===== REALISTIC LIVE TV ===== */
 .tv-frame {
-  width: 220px;
-  height: 130px;
+  width: 240px;
+  height: 140px;
   margin: 25px auto 10px;
-  border-radius: 12px;
+  border-radius: 14px;
   background: #000;
   border: 3px solid #e6c45c;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 25px rgba(230,196,92,0.4);
+  box-shadow:
+    0 0 25px rgba(230,196,92,0.35),
+    inset 0 0 20px rgba(255,255,255,0.05);
 }
 
+/* MAIN SCREEN */
 .tv-screen {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    120deg,
-    #111 25%,
-    #1f1f1f 37%,
-    #111 63%
-  );
-  animation: tvMove 2.5s linear infinite;
+  background:
+    linear-gradient(
+      120deg,
+      #0d0d0d 20%,
+      #1a1a1a 35%,
+      #0d0d0d 60%
+    );
+  background-size: 200% 100%;
+  animation: broadcast 2.2s linear infinite;
 }
 
-@keyframes tvMove {
+/* MOVING LIGHT */
+@keyframes broadcast {
   0% { background-position: 0% 0%; }
   100% { background-position: 200% 0%; }
 }
 
-.live-badge {
-  display: inline-block;
-  margin-top: 8px;
-  padding: 5px 14px;
-  font-size: 11px;
-  font-weight: bold;
-  color: white;
-  background: #c40000;
-  border-radius: 20px;
-  animation: pulse 1.6s infinite;
+/* SCANLINES */
+.tv-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.03) 1px,
+    rgba(0,0,0,0.08) 2px
+  );
+  animation: scanMove 0.12s linear infinite;
 }
 
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(196,0,0,0.6); }
-  70% { box-shadow: 0 0 0 12px rgba(196,0,0,0); }
-  100% { box-shadow: 0 0 0 0 rgba(196,0,0,0); }
+@keyframes scanMove {
+  from { transform: translateY(0); }
+  to { transform: translateY(2px); }
 }
+
+/* NOISE FLICKER */
+.tv-screen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  animation: noise 0.3s infinite;
+}
+
+@keyframes noise {
+  0% { opacity: 0.03; }
+  50% { opacity: 0.06; }
+  100% { opacity: 0.03; }
+}
+
 
 /* ===== CONTENT ===== */
 .container {
@@ -128,3 +151,4 @@ footer {
   color: #aaa;
   border-top: 1px solid rgba(230,196,92,0.25);
 }
+
